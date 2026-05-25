@@ -256,11 +256,76 @@ body {
 
 .image-compare--large {
   width: 100%;
+  align-items: stretch;
 }
 
 .image-compare--large .panel {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  min-height: 36rem;
+}
+
+.compare-tab__hint {
+  border: 1px solid var(--color-border);
+  border-bottom: none;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+  background: var(--color-muted);
+}
+
+.compare-tab__hint-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.compare-tab__hint-desc {
+  margin: 0.5rem 0 0;
+  color: var(--color-muted-foreground);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.panel--compare.panel--large .panel__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 28rem;
+  padding: 0.5rem;
+}
+
+.panel--compare.panel--large .panel__frame {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 24rem;
+}
+
+.panel--compare.panel--large .panel__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  margin: 0;
+}
+
+.panel--compare.panel--large .panel__placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 20rem;
+  flex: 1;
+  align-self: stretch;
+}
+
+.panel--compare.panel--large .panel__metrics {
+  flex-shrink: 0;
 }
 
 .panel--large .panel__header {
@@ -273,19 +338,59 @@ body {
 }
 
 .panel--large .panel__body {
+  flex: 1;
   padding: 0.5rem 0.75rem;
+}
+
+.panel--large .panel__frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .panel--large .panel__image {
   display: block;
   max-height: min(88vh, 44rem);
-  width: 100%;
+  max-width: 100%;
+  width: auto;
   height: auto;
   object-fit: contain;
+  object-position: center;
+  margin: 0 auto;
 }
 
 .panel--large .panel__placeholder {
+  flex: 1;
   min-height: 24rem;
+}
+
+.panel__placeholder--rich {
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  text-align: center;
+  text-transform: none;
+  letter-spacing: normal;
+  opacity: 1;
+  border-style: solid;
+  border-color: var(--color-border-light);
+}
+
+.panel__placeholder--rich .empty-state__title {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.panel__placeholder--rich .empty-state__desc {
+  margin: 0;
+  max-width: 28rem;
+  color: var(--color-muted-foreground);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.5;
 }
 
 .panel--large .panel__metrics {
@@ -353,14 +458,6 @@ body {
   letter-spacing: -0.025em;
 }
 
-.tab-bar__chapter {
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  opacity: 0.7;
-}
-
 .control-field__label {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -410,7 +507,7 @@ body {
 
 .panel__body {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   padding: 1.5rem;
   min-height: 20rem;
@@ -418,9 +515,11 @@ body {
 
 .panel__image {
   max-height: 20rem;
-  width: 100%;
   max-width: 100%;
+  width: auto;
+  height: auto;
   object-fit: contain;
+  object-position: center;
   border: 2px solid currentColor;
 }
 
@@ -888,6 +987,10 @@ body {
 .formula-card {
   border: 1px solid var(--color-border);
   padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 7rem;
 }
 
 .formula-card__label {
@@ -899,9 +1002,16 @@ body {
   margin: 0 0 0.75rem;
 }
 
-.formula-card__expr {
-  font-family: var(--font-mono);
-  font-size: 1.125rem;
+.math-formula {
+  overflow-x: auto;
+}
+
+.math-formula--display .katex {
+  font-size: 1.625rem;
+  line-height: 1.4;
+}
+
+.math-formula--display .katex-display {
   margin: 0;
 }
 

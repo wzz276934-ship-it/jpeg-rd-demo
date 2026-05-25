@@ -1,11 +1,11 @@
 import type { TabId } from '../../types';
 
-const TABS: { id: TabId; label: string; chapter: string }[] = [
-  { id: 'compare', label: '原图 / 重建图', chapter: '§6.6.2' },
-  { id: 'dct', label: 'DCT 系数', chapter: '§6.6.1' },
-  { id: 'quantize', label: '量化过程', chapter: '§6.1 / §6.6.2' },
-  { id: 'encode', label: '编码细节', chapter: '§4.6' },
-  { id: 'rd', label: 'R-D 曲线', chapter: '§6.2' },
+const TABS: { id: TabId; label: string }[] = [
+  { id: 'compare', label: '原图 / 重建图' },
+  { id: 'dct', label: 'DCT 系数' },
+  { id: 'quantize', label: '量化过程' },
+  { id: 'encode', label: '编码细节' },
+  { id: 'rd', label: 'R-D 曲线' },
 ];
 
 interface TabBarProps {
@@ -27,7 +27,6 @@ export function TabBar({ activeTab, onTabChange }: TabBarProps) {
             className={`tab-bar__btn ${isActive ? 'tab-bar__btn--active' : ''}`}
           >
             <span className="tab-bar__label">{tab.label}</span>
-            <span className="tab-bar__chapter">{tab.chapter}</span>
           </button>
         );
       })}

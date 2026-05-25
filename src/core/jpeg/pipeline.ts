@@ -60,6 +60,7 @@ function computeMetrics(
 function processBlock(
   pixels: Float32Array,
   width: number,
+  height: number,
   blockRow: number,
   blockCol: number,
   quantMatrix: number[][],
@@ -67,7 +68,7 @@ function processBlock(
   detail: BlockDetail;
   rle: RleSymbol[];
 } {
-  const blockPixels = extractBlock(pixels, width, blockRow, blockCol);
+  const blockPixels = extractBlock(pixels, width, height, blockRow, blockCol);
   const dctCoeffs = dct2(blockPixels);
   const quantizedCoeffs = quantizeBlock(dctCoeffs, quantMatrix);
   const zigzag = zigzagScan(quantizedCoeffs);
@@ -100,12 +101,12 @@ function reconstructImage(
 
   for (let by = 0; by < blocksY; by++) {
     for (let bx = 0; bx < blocksX; bx++) {
-      const blockPixels = extractBlock(pixels, width, by, bx);
+      const blockPixels = extractBlock(pixels, width, height, by, bx);
       const dctCoeffs = dct2(blockPixels);
       const quantized = quantizeBlock(dctCoeffs, quantMatrix);
       const dequantized = dequantizeBlock(quantized, quantMatrix);
       const spatial = idct2(dequantized);
-      placeBlock(output, width, by, bx, spatial);
+      placeBlock(output, width, height, by, bx, spatial);
     }
   }
 
@@ -126,11 +127,18 @@ export function runPipeline(
   const blocksY = height / BLOCK_SIZE;
 
   const allRle: RleSymbol[] = [];
-  let selectedBlock = processBlock(pixels, width, 0, 0, quantMatrix).detail;
+  let selectedBlock = processBlock(pixels, width, height, 0, 0, quantMatrix).detail;
 
   for (let by = 0; by < blocksY; by++) {
     for (let bx = 0; bx < blocksX; bx++) {
-      const { detail, rle } = processBlock(pixels, width, by, bx, quantMatrix);
+      const { detail, rle } = processBlock(
+        pixels,
+        width,
+        height,
+        by,
+        bx,
+        quantMatrix,
+      );
       allRle.push(...rle);
       if (by === selectedBlockRow && bx === selectedBlockCol) {
         selectedBlock = detail;
@@ -192,7 +200,7 @@ export function computeRdCurve(
     const allRle: RleSymbol[] = [];
     for (let by = 0; by < blocksY; by++) {
       for (let bx = 0; bx < blocksX; bx++) {
-        const { rle } = processBlock(pixels, width, by, bx, quantMatrix);
+        const { rle } = processBlock(pixels, width, height, by, bx, quantMatrix);
         allRle.push(...rle);
       }
     }

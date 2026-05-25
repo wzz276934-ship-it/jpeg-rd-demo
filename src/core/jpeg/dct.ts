@@ -62,6 +62,7 @@ export function idct2(coeffs: Matrix8x8): Matrix8x8 {
 export function extractBlock(
   pixels: Float32Array,
   width: number,
+  height: number,
   blockRow: number,
   blockCol: number,
 ): Matrix8x8 {
@@ -73,7 +74,7 @@ export function extractBlock(
     for (let j = 0; j < BLOCK_SIZE; j++) {
       const row = blockRow * BLOCK_SIZE + i;
       const col = blockCol * BLOCK_SIZE + j;
-      if (row < width && col < width) {
+      if (row < height && col < width) {
         block[i][j] = pixels[row * width + col] - 128;
       }
     }
@@ -85,6 +86,7 @@ export function extractBlock(
 export function placeBlock(
   pixels: Float32Array,
   width: number,
+  height: number,
   blockRow: number,
   blockCol: number,
   block: Matrix8x8,
@@ -93,7 +95,7 @@ export function placeBlock(
     for (let j = 0; j < BLOCK_SIZE; j++) {
       const row = blockRow * BLOCK_SIZE + i;
       const col = blockCol * BLOCK_SIZE + j;
-      if (row < width && col < width) {
+      if (row < height && col < width) {
         pixels[row * width + col] = Math.max(
           0,
           Math.min(255, block[i][j] + 128),
