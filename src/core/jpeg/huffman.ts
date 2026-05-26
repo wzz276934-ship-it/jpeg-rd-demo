@@ -48,14 +48,37 @@ function collectCodes(
   collectCodes(node.right, prefix + '1', table);
 }
 
-export function buildHuffmanTable(symbols: RleSymbol[]): HuffmanEntry[] {
-  const frequencies = new Map<string, number>();
-  const total = symbols.length;
+function symbolKey(symbol: RleSymbol): string {
+  return `(${symbol.run},${symbol.magnitude})`;
+}
 
+function buildSymbolFrequencies(symbols: RleSymbol[]): Map<string, number> {
+  const frequencies = new Map<string, number>();
   for (const symbol of symbols) {
-    const key = `(${symbol.run},${symbol.magnitude})`;
+    const key = symbolKey(symbol);
     frequencies.set(key, (frequencies.get(key) ?? 0) + 1);
   }
+  return frequencies;
+}
+
+export function computeSymbolEntropy(symbols: RleSymbol[]): number {
+  if (symbols.length === 0) return 0;
+
+  const frequencies = buildSymbolFrequencies(symbols);
+  const total = symbols.length;
+  let entropy = 0;
+
+  for (const count of frequencies.values()) {
+    const probability = count / total;
+    entropy -= probability * Math.log2(probability);
+  }
+
+  return entropy;
+}
+
+export function buildHuffmanTable(symbols: RleSymbol[]): HuffmanEntry[] {
+  const frequencies = buildSymbolFrequencies(symbols);
+  const total = symbols.length;
 
   const tree = buildTree(frequencies);
   const codeMap = new Map<string, string>();
@@ -72,8 +95,7 @@ export function buildHuffmanTable(symbols: RleSymbol[]): HuffmanEntry[] {
         codeLength: code.length,
       };
     })
-    .sort((a, b) => b.probability - a.probability)
-    .slice(0, 16);
+    .sort((a, b) => b.probability - a.probability);
 }
 
 export function computeAverageCodeLength(
@@ -84,7 +106,7 @@ export function computeAverageCodeLength(
   let totalLength = 0;
 
   for (const symbol of symbols) {
-    const key = `(${symbol.run},${symbol.magnitude})`;
+    const key = symbolKey(symbol);
     totalLength += lookup.get(key) ?? Math.max(4, key.length);
   }
 

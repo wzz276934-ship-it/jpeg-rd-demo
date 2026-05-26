@@ -14,10 +14,10 @@ interface EncodingTabProps {
 }
 
 export function EncodingTab({ result }: EncodingTabProps) {
-  const { encoding, sourceStats } = result;
+  const { encoding } = result;
 
   const comparisonData = [
-    { name: '信源熵 H(X)', value: sourceStats.entropy },
+    { name: 'RLE 符号熵 H(S)', value: encoding.symbolEntropy },
     { name: '平均码长 L', value: encoding.averageCodeLength },
   ];
 
@@ -95,8 +95,8 @@ export function EncodingTab({ result }: EncodingTabProps) {
 
       <div className="section-card">
         <div className="section-card__header">
-          <h4>平均码长 vs 信源熵</h4>
-          <p className="section-card__desc">验证定理 4.6.1：L ≥ H(X)</p>
+          <h4>平均码长 vs RLE 符号熵</h4>
+          <p className="section-card__desc">验证信源编码定理：L ≥ H(S)</p>
         </div>
         <div className="chart-box">
           <ResponsiveContainer width="100%" height="100%">
@@ -126,9 +126,9 @@ export function EncodingTab({ result }: EncodingTabProps) {
             <p className="stat-cell__value">{encoding.bitRate.toFixed(4)} bit/px</p>
           </div>
           <div className="stat-cell">
-            <p className="stat-cell__label">L ≥ H(X)</p>
+            <p className="stat-cell__label">L ≥ H(S)</p>
             <p className="stat-cell__value">
-              {encoding.averageCodeLength >= sourceStats.entropy ? '✓ 成立' : '—'}
+              {encoding.averageCodeLength >= encoding.symbolEntropy ? '✓ 成立' : '—'}
             </p>
           </div>
         </div>

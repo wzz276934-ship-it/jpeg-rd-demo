@@ -43,6 +43,7 @@ export interface EncodingStats {
   zigzag: number[];
   rle: RleSymbol[];
   huffmanTable: HuffmanEntry[];
+  symbolEntropy: number;
   averageCodeLength: number;
   totalBits: number;
   bitRate: number;

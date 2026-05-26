@@ -4,6 +4,7 @@ import { computeSourceStats, theoreticalRateDistortion } from './entropy';
 import {
   buildHuffmanTable,
   computeAverageCodeLength,
+  computeSymbolEntropy,
   estimateTotalBits,
 } from './huffman';
 import { dequantizeBlock, quantizeBlock } from './quantize';
@@ -146,9 +147,10 @@ export function runPipeline(
     }
   }
 
-  const huffmanTable = buildHuffmanTable(allRle);
-  const averageCodeLength = computeAverageCodeLength(allRle, huffmanTable);
-  const totalBits = estimateTotalBits(allRle, huffmanTable);
+  const huffmanTableFull = buildHuffmanTable(allRle);
+  const symbolEntropy = computeSymbolEntropy(allRle);
+  const averageCodeLength = computeAverageCodeLength(allRle, huffmanTableFull);
+  const totalBits = estimateTotalBits(allRle, huffmanTableFull);
   const bitRate = totalBits / pixels.length;
   const rawBits = pixels.length * 8;
   const compressionRatio = rawBits / Math.max(totalBits, 1);
@@ -156,7 +158,8 @@ export function runPipeline(
   const encoding: EncodingStats = {
     zigzag: selectedBlock.zigzag,
     rle: selectedBlock.rle,
-    huffmanTable,
+    huffmanTable: huffmanTableFull.slice(0, 16),
+    symbolEntropy,
     averageCodeLength,
     totalBits,
     bitRate,
