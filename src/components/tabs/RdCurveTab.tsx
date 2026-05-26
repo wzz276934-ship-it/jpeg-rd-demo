@@ -37,12 +37,12 @@ export function RdCurveTab({
   return (
     <div className="stack">
       <div className="inverted-banner">
-        <p className="inverted-banner__label">率失真函数 §6.2</p>
+        <p className="inverted-banner__label">率失真函数 · 高斯无记忆信源（参考线）</p>
         <p className="inverted-banner__value" style={{ fontSize: '2rem' }}>
           R(D) = ½ log₂(σ²/D)
         </p>
         <p className="inverted-banner__desc">
-          码率越低失真越大，且存在理论极限 — 点击曲线上的点或表格行切换 Q 值
+          虚线为无记忆高斯信源参考线；真实图像因空间相关，JPEG 实验曲线常落在其下方 — 点击曲线上的点或表格行切换 Q 值
         </p>
       </div>
 

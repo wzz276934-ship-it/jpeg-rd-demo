@@ -388,7 +388,7 @@ export function RdCurveChart({
               strokeDasharray="6 4"
               dot={false}
               isAnimationActive={false}
-              name="理论下界 R(D)"
+              name="高斯无记忆 R(D) 参考线"
             />
             <Line
               data={experimental}
